@@ -142,7 +142,7 @@
       .scroll-hint {
         position: absolute;
         bottom: 36px;
-        left: 50%;
+        left: 42%;
         transform: translateX(-50%);
         font-family: "Noto Sans SC", sans-serif;
         font-size: 10px;
@@ -731,20 +731,26 @@
 
       // Share
       function shareThis() {
-        const data = {
-          title: "受侵略戕害的无辜儿童国际日 · 6月4日",
-          text:
-            "每年6月4日，联合国纪念日——受侵略戕害的无辜儿童国际日（ES-7/8号决议）\n这一天，请记住那些在战争与侵略中受苦的无辜儿童。",
-        };
-        if (navigator.share) navigator.share(data);
-        else {
-          const t = data.title + "\n" + data.text;
-          navigator.clipboard
-            ? navigator.clipboard.writeText(t).then(() =>
-              alert("内容已复制到剪贴板")
-            )
-            : alert(t);
+        const urlToCopy = "https://elliscavendish.github.io/some-html/";
+
+        if (navigator.share) {
+          // 如果支持原生分享，也可以分享网址（可选）
+          navigator.share({ url: urlToCopy }).catch(() => {
+            // 如果分享失败，回退到复制
+            copyToClipboard(urlToCopy);
+          });
+        } else {
+          copyToClipboard(urlToCopy);
         }
+      }
+
+      // 辅助函数：复制文本到剪贴板
+      function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("链接已复制到剪贴板：" + text);
+        }).catch(() => {
+          alert("无法自动复制，请手动复制：" + text);
+        });
       }
     </script>
   </body>
